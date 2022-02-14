@@ -1,0 +1,73 @@
+﻿@model ProjektASPNET.ViewModel.ItemViewModel
+@{ ViewBag.Title = "Delete"; }
+
+<h2>Index</h2>
+
+<script type="text/javascript">$(document).ready(function() {
+        $("#btnDelete").click(function() {
+            DeleteItem();
+        });
+
+    });
+
+    function ResetItem() {
+        $("#ItemId").val("1");
+      
+        $("#ItemName").val("");
+    
+    }
+
+    function DeleteItem() {
+        var formData = new FormData();
+        formData.append("ItemId", $("#ItemId").val());
+       
+       
+
+
+        $.ajax({
+            async: true,
+            dataType: 'JSON',
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            url: '/Item/Delete',
+            data: formData,
+            success: function (data) {
+                if (data.Success)
+                {
+                    alert(data.Message);
+                    ResetItem();
+                }
+            },
+            error: function() {
+                alert("There is some problem to delete Item.");
+            }
+        });
+
+
+
+    }</script>
+
+<div class="container">
+
+    <div class="col-md-4">
+        <div class="form-group">
+            Id :
+            @Html.DropDownListFor(model => model.ItemId, new SelectList(Model.ItemIdSelectListItem, "Value", "Text"),
+                                  new { @class = "form-control" })
+        </div>
+    </div>
+
+
+    
+
+    
+
+    <div>
+       
+        <input type="button" value="Delete" name="delete" class="btn btn-danger" id="btnDelete" />
+        &nbsp;
+       
+    </div>
+</div>
+
